@@ -30,6 +30,7 @@ def test_queue():
 '''
 	Manager: 子进程间通信
 	优点：适用于Pool
+	A manager returned by Manager() will support types list, dict, Namespace, Lock, RLock, Semaphore, BoundedSemaphore, Condition, Event, Queue, Value and Array.
 '''
 def test_Manager_write(share_par, v):
 	with lock:
@@ -40,29 +41,50 @@ def test_Manager_write(share_par, v):
 def test_Manager_read(share_par):
 	with lock:
 		print ctime(), 'read', len(share_par), share_par
-		share_par.pop() ## 好像没有起作用,还是共享变量不接受修改 ##
+		#share_par.pop() ## 好像没有起作用,还是共享变量不接受修改 ##
 		print ctime(), 'read', len(share_par), share_par
-def test_Manager():
+def test_Manager_list():
 	lists = Manager().list() ## 创建子进程 共享变量 ## list里面可以放任意东西 ##
-	print 'list len :', len(lists), 'begin'
+	print 'list len :', len(lists), 'begin', 'lists', lists
 	pool  = Pool()
+	#lock = Lock() ## 如果在这里加锁，是局部锁，不能用 ##
 	for i in xrange(10):
 		print 'list len :', len(lists), ctime()
 		if len(lists)<=0:
 			## 为什么这个是<=0??? ##解释是说如果lists长度大于0，则不再往进程池里添加子进程
 			pool.apply_async(test_Manager_write, args=(lists,i))
 		else:
-			pool.apply_async(test_Manager_read, args=(lists))
+			pool.apply(test_Manager_read, args=(lists,))
 			break
 	pool.close()
 	pool.join()
-	print lists ## 子进程间的共享变量，没法被主进程读取到 ## 所以为空 ##
+	print 'last lists:', lists ## 子进程间的共享变量，没法被主进程读取到 ## 所以为空 ##
+def test_Manager_write2(dic, v):
+	with lock:
+		dic[v] = v
+		print ctime(), 'dic :', dic
+def test_Manager_dict():
+	dic = Manager().dict()
+	print 'dic len :', len(dic), 'begin', 'dic', dic
+	pool = Pool(processes=4)
+	for i in xrange(5):
+		print 'dic len :', len(dic), ctime()
+		pool.apply_async(test_Manager_write2, args=(dic, i))
+	pool.close()
+	pool.join()
+	print 'last dic:', dic
 
 if __name__=='__main__':
 	lock  = Lock() ## notice: lock 必须是全局的 ##
-	#print ' === test Queue   === '
-	#test_queue()
-	print ' === test Manager === '
-	test_Manager()
-
-
+	print ' === test Queue   === '
+	test_queue()
+	sleep(2)
+	print ' === test Manager list === '
+	test_Manager_list()
+	sleep(2)
+	print ' === test Manager dict === '
+	test_Manager_dict()
+	print '=====  1）必须加锁 ===='
+	print '=====  2）进程间通信用Manager() ===='
+	print '=====  3）主进程可以访问共享变量===='
+	print '=====  4）进程池比手动Process好用==='
