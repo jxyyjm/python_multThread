@@ -42,7 +42,8 @@ def test_join():
 	## 为什么呢？主进程，难道在pool.apply_async时，会更先执行            ##
 	print 'active_children :'
 	for i in multiprocessing.active_children():
-		print i
+		print 'active_children :', i, 'is_alive :', i.is_alive(), 'name :', i.name, 'pid :', i.pid, 'daemon :', i.daemon
+		
 	print 'cpu_count       :', multiprocessing.cpu_count()
 	print 'current_process :', multiprocessing.current_process()
 	pool.close() ## 调用pool.close()，这样就不会有新的进程加入到pool里面 ##
