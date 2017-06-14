@@ -73,7 +73,8 @@ if __name__=='__main__':
 	print '=== test 非阻 pool.terminate   === ', ctime()
 	test_terminate()
 	print '============================================'
-	print 'pool.apply_async在于控制所有进程的异步, 包括主进程'
-	print 'pool.apply在于控制所有进程的同步，包括主进程(很奇怪)'
-	print 'pool.join 当主进程结束时，需要等待子进程(pool)的结束'
-	print 'pool.terminate 当主进程结束时，不等待子进程'
+	print '=== pool.apply_async在于控制所有进程的异步, 包括主进程   === '
+	print '=== pool.apply在于控制所有进程的同步，包括主进程(很奇怪) === '
+	print '=== pool.join 当主进程结束时，需要等待子进程(pool)的结束 === '
+	print '=== pool.terminate 当主进程结束时，不等待子进程          === '
+	print '=== pool.apply相当于串行，进程池的进程数量可以设置       === '
