@@ -40,15 +40,16 @@ def test_Manager_write(share_par, v):
 def test_Manager_read(share_par):
 	with lock:
 		print ctime(), 'read', len(share_par), share_par
-		#share_par.pop() ## 好像没有起作用 ##
-		#print ctime(), 'read', len(share_par), share_par
+		share_par.pop() ## 好像没有起作用,还是共享变量不接受修改 ##
+		print ctime(), 'read', len(share_par), share_par
 def test_Manager():
 	lists = Manager().list() ## 创建子进程 共享变量 ## list里面可以放任意东西 ##
-	print len(lists), 'begin'
+	print 'list len :', len(lists), 'begin'
 	pool  = Pool()
 	for i in xrange(10):
-		print len(lists), ctime()
-		if len(lists)<=0: ## 为什么这个是<=0??? ##
+		print 'list len :', len(lists), ctime()
+		if len(lists)<=0:
+			## 为什么这个是<=0??? ##解释是说如果lists长度大于0，则不再往进程池里添加子进程
 			pool.apply_async(test_Manager_write, args=(lists,i))
 		else:
 			pool.apply_async(test_Manager_read, args=(lists))
@@ -61,7 +62,6 @@ if __name__=='__main__':
 	lock  = Lock() ## notice: lock 必须是全局的 ##
 	#print ' === test Queue   === '
 	#test_queue()
-	#sleep(5)
 	print ' === test Manager === '
 	test_Manager()
 
