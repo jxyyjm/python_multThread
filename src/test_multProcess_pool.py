@@ -40,6 +40,11 @@ def test_join():
 	print '== mark =='
 	## 发现 == mark == 标记，会在进程池的所有进程之前 执行               ##
 	## 为什么呢？主进程，难道在pool.apply_async时，会更先执行            ##
+	print 'active_children :'
+	for i in multiprocessing.active_children():
+		print i
+	print 'cpu_count       :', multiprocessing.cpu_count()
+	print 'current_process :', multiprocessing.current_process()
 	pool.close() ## 调用pool.close()，这样就不会有新的进程加入到pool里面 ##
 	pool.join()
 	## 阻塞主进程，等待子进程的退出                                ##
