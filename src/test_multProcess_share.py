@@ -45,7 +45,7 @@ def test_Manager_read(share_par):
 def test_Manager():
 	lists = Manager().list() ## 创建子进程 共享变量 ## list里面可以放任意东西 ##
 	print 'list len :', len(lists), 'begin'
-	pool  = Pool()
+	pool  = Pool(4)
 	for i in xrange(10):
 		print 'list len :', len(lists), ctime()
 		if len(lists)<=0:
