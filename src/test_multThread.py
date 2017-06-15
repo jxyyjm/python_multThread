@@ -7,6 +7,12 @@ sys.setdefaultencoding('utf-8')
 import threading
 from time import ctime, sleep
 
+'''
+	threading is a baseTreading-package.
+	if use threading_pool, you will need multiprocessing.dummy.
+	it will be better.
+'''
+
 def music(name):
 	for i in range(2):
 		print "I was listening to", name, ctime()
