@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf-8')
 from time import ctime, sleep
 #from multiprocessing import dummy as multiprocessing
 import multiprocessing as multiprocessing
-# 有个疑问是 多进程加锁，程序不能正常执行 #
+
 def test_async(lock):
 	with lock:
 		print ctime(), 'test_async'
@@ -63,6 +63,9 @@ if __name__=='__main__':
 	dic  = multiprocessing.Manager().dict()
 	lock = multiprocessing.Manager().Lock()
 	## 多进程的共享锁，需要用Manager来定义 ##
+	## 在这里，是用进程池时的共享锁 ##
+	## 如果是multiprocessing.Processing(3) ##
+	## 是不是，就不用Manager().Lock()来定义共享锁了呢 ##
 	rootDir = './20170614'
 	for root,dirs,files in os.walk(rootDir):
 		for filespath in files:
