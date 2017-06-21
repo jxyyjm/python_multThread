@@ -41,6 +41,7 @@ subparser = parser.add_subparsers(
 
 # 3) create the parser for the 'a' command
 parser_a = subparser.add_parser('a', help='a help')
+parser_a.set_defaults(func='a') ## 强调保证执行 a sub-command-line ##
 parser_a.add_argument(
 		'-update',
 		type = int,
@@ -53,16 +54,15 @@ parser_a.add_argument(
 		help = 'update2 help',
 		choices = range(5)
 		)
-parser_a.set_defaults(func='a') ## 强调保证执行 a sub-command-line ##
 
 # 4) create the parser for the 'b' command
 parser_b = subparser.add_parser('b', help='b help')
+parser_b.set_defaults(func='b')
 parser_b.add_argument(
 		'-commit',
 		type = int,
 		help = 'commit help'
 		)
-parser_b.set_defaults(func='b')
 
 args = parser.parse_args()
 print args
