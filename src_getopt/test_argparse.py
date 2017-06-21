@@ -98,4 +98,8 @@ print args.input_file
 print args.output_file
 print args.integers
 print args.left_value
-
+'''
+	test:
+	python test_argparse.py -i input::file -o output::file -integers 1 2 3 4 -left_value 43
+	python test_argparse.py -i input::file -o output::file -integers 1 2 3 4
+'''
