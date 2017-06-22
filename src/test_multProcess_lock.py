@@ -71,7 +71,8 @@ if __name__=='__main__':
 		for filespath in files:
 			filename = os.path.join(root,filespath)
 			print 'input filename :', filename
-			pool.apply_async(check_file, args=(filename, dic, lock))
+			process_res = pool.apply_async(check_file, args=(filename, dic, lock))
+			process_res.successful()
 			pool.apply_async(save_file, args=(lock, dic))
 	print '=== acitve process === '
 	p_list = multiprocessing.active_children()
